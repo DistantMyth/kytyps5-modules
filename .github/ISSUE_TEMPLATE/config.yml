@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: KytyPS5 Website
+    url: https://kytyps5.github.io
+    about: Compatibility list, documentation, and emulator guides.
+  - name: KytyPS5 Main Repository
+    url: https://github.com/KytyPS5/KytyPS5
+    about: KytyPS5 emulator source code and issues.

@@ -1,0 +1,104 @@
+name: Process Module Submission
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: submission-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  process:
+    if: >-
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'submission')) ||
+      (github.event_name == 'issue_comment' &&
+       (startsWith(github.event.comment.body, '/patch ') ||
+        startsWith(github.event.comment.body, '/cheat ') ||
+        startsWith(github.event.comment.body, '/config ')))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Process submission & write module file
+        id: process
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_PAYLOAD: ${{ toJson(github.event) }}
+        run: node scripts/process-submission.mjs
+
+      - name: Regenerate catalog index
+        run: node scripts/build-index.mjs
+
+      - name: Create or update Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: |
+            patches/json/
+            cheats/json/
+            configs/json/
+            index.json
+            index.min.json
+          commit-message: "${{ steps.process.outputs.pr_title }}"
+          branch: "submission/${{ steps.process.outputs.branch_suffix }}"
+          title: "${{ steps.process.outputs.pr_title }}"
+          body: |
+            Automated submission from #${{ github.event.issue.number }} by @${{ steps.process.outputs.author }}.
+
+            - **Category:** ${{ steps.process.outputs.category }}
+            - **Title ID:** ${{ steps.process.outputs.title_id }}
+            - **Version:** ${{ steps.process.outputs.version }}
+            - **File:** `${{ steps.process.outputs.filename }}`
+          delete-branch: true
+
+      - name: Add reaction to issue or comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const isComment = context.eventName === 'issue_comment';
+            if (isComment) {
+              await github.rest.reactions.createForIssueComment({
+                ...context.repo,
+                comment_id: context.payload.comment.id,
+                content: 'eyes'
+              });
+            } else {
+              await github.rest.reactions.createForIssue({
+                ...context.repo,
+                issue_number: context.issue.number,
+                content: 'eyes'
+              });
+            }
+
+      - name: Auto-merge for Maintainers / Acknowledge Community
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+          IS_COLLABORATOR: ${{ steps.process.outputs.is_collaborator }}
+          ISSUE_NUM: ${{ github.event.issue.number }}
+        run: |
+          if [ "$IS_COLLABORATOR" = "true" ] && [ -n "$PR_NUMBER" ]; then
+            gh pr merge "$PR_NUMBER" --auto --squash
+            gh issue comment "$ISSUE_NUM" -b "✅ **Submission accepted.** PR $PR_URL has been opened and auto-merged."
+          elif [ -n "$PR_URL" ]; then
+            gh issue comment "$ISSUE_NUM" -b "🚀 **Submission processed.** Pull Request opened: $PR_URL. A maintainer will review and merge it."
+          fi

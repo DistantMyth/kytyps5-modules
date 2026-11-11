@@ -1,0 +1,490 @@
+{
+    "id": "PPSA21564",
+    "mods": [
+        {
+            "enabled": true,
+            "memory": [
+                {
+                    "off": "4584f60f84ed0800004531f64c8d3dea78a40141b430",
+                    "offset": "0x73eb993",
+                    "on": "4584f6e9ee080000904531f64c8d3dea78a40141b430"
+                }
+            ],
+            "name": "Select the existing non-tiled deferred-lighting renderer"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "0fb682800700008887e4050000",
+                    "offset": "0x711d0b3",
+                    "on": "b80000000090908887e4050000"
+                }
+            ],
+            "name": "Disable GI probes and lighting shaders"
+        },
+        {
+            "enabled": true,
+            "memory": [
+                {
+                    "off": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae0a00",
+                    "on": "9c505152565741504151415241534881ece8010000c5fe7f0c24c5fe7f542420c5fe7f5c2440c5fe7f642460c5fe7fac2480000000c5fe7fb424a0000000c5fe7fbc24c0000000c57e7f8424e0000000c57e7f8c2400010000c57e7f942420010000c57e7f9c2440010000c57e7fa42460010000c57e7fac2480010000c57e7fb424a0010000c57e7fbc24c0010000e85cbea0f7c5fb1005dc030000c5f157c9c5f92ec17669c5f92e05c2030000775f488b0d792fd0fe4885c97e534c8b05550300004d85c07447c4e1f32ac9c5fb59c1c461fb2cc84d01c14c890d5803000048c7055503000000093d00483b05460300007d1b483b051d0300007c1248ff0d3c0300007409f390e8e3bda0f7ebdc4889c2488b0d172fd0fe4c8b05f8020000488915f1020000c5fb1015d10200004d85c00f84fa0000004885c90f8ef10000004889d04c29c00f86e5000000c5f957c0c4e1fb2ac0c5f157c9c4e1f32ac9c5fb5ec1c5fb102db5020000c5fb1105ad02000048b8000000000000f43fc4e1f96ed8c5e359da48b89a9999999999e93fc4e1f96ee0c5db59e24c8b0d88020000c5f92ec3770bc5f92ee0771c4531c9eb544d85c97f034531c949ffc14983f9027c43c5fb5dd5eb154d85c97c034531c949ffc94983f9fe7f2cc5fb5fd5c5eb5f157302000048b89a9999999999b93fc4e1f96ed8c5eb5dd348c7052502000000000000eb3f4c890d1c020000c5eb591d3c020000c5fb5dc3c5fb5f0538020000c5fb5cc2c5fb59051c020000c5eb58d0eb1248ff05f701000048c705e401000000000000c5fb1115b4010000c5eb5acac5fa110db0010000c5eb590d00020000c5f3580d00020000c4e1fb2cc14889059c010000c5f928c2c5fe6f0c24c5fe6f542420c5fe6f5c2440c5fe6f642460c5fe6fac2480000000c5fe6fb424a0000000c5fe6fbc24c0000000c57e6f8424e0000000c57e6f8c2400010000c57e6f942420010000c57e6f9c2440010000c57e6fa42460010000c57e6fac2480010000c57e6fb424a0010000c57e6fbc24c00100004881c4e8010000415b415a415941585f5e5a59589dc3"
+                },
+                {
+                    "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae0e00",
+                    "on": "111111111111913f8988883c000000001a410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009a9999999999b93f000000000000f83f2d431cebe2361a3f0000000080842e41000000000000e03f000000000000d03f"
+                },
+                {
+                    "off": "488b05290bfd08c3",
+                    "offset": "0x3520",
+                    "on": "e902d8ad0fcccccc"
+                },
+                {
+                    "off": "c5fb100548d03408c5fb5e05000bfd08c3cccccccccc",
+                    "offset": "0x3530",
+                    "on": "803d49d9ad0f000f85d9d7ad0fc5fb1005bbd8ad0fc3"
+                },
+                {
+                    "off": "c5fa1005f00afd08c3",
+                    "offset": "0x3550",
+                    "on": "e9ebd7ad0fcccccccc"
+                },
+                {
+                    "off": "e820eed5ff",
+                    "offset": "0x2a470b",
+                    "on": "e8f8c5830f"
+                },
+                {
+                    "off": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae0d08",
+                    "on": "803d71010000007505e9eafcffffc5fb100562f886f8c5fb5e051a334ff9c3803d52010000007508488b05d9000000c3488b0511334ff9c3803d39010000007509c5fa1005b7000000c3c5fa1005ee324ff9c3"
+                },
+                {
+                    "off": "0000000000000000",
+                    "offset": "0xfae0e80",
+                    "on": "0000000000000000"
+                }
+            ],
+            "name": "Decouple gameplay timers from render FPS (v3: smoothed dt + fast step tracking, no feedback) [R1+X runtime on/off gate]"
+        },
+        {
+            "enabled": true,
+            "memory": [
+                {
+                    "off": "e8e3cbd5ff",
+                    "offset": "0x2a4788",
+                    "on": "e8d3c5830f"
+                },
+                {
+                    "off": "0000000000000000000000000000",
+                    "offset": "0xfae0d60",
+                    "on": "803d19010000000f85030652f0c3"
+                }
+            ],
+            "name": "Disable game CPU frame-limiter sleep (removes dt feedback loop; needs Decouple; follows the R1+X toggle)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "e8e8cc5106",
+                    "offset": "0xfcab13",
+                    "on": "e85862b10e"
+                },
+                {
+                    "off": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae0d70",
+                    "on": "56e88a6aa0f75e85c07e3b8d48ff486bc9788b0c0e81e10048000081f1004800000f94c28a0de70000008815e100000038ca76128035d50000000148c7056200000000000000c3"
+                }
+            ],
+            "name": "R1+X toggles the Decouple/deltatime patches on/off at runtime (PS5 pad via scePadRead; needs Decouple)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "0000000000000000",
+                    "offset": "0xfae0e78",
+                    "on": "111111111111913f"
+                }
+            ],
+            "name": "Precise frame cap 60 FPS (spin-wait, needs Decouple; enable only one)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "0000000000000000",
+                    "offset": "0xfae0e78",
+                    "on": "176cc1166cc1863f"
+                }
+            ],
+            "name": "Precise frame cap 90 FPS (spin-wait, needs Decouple; enable only one)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "0000000000000000",
+                    "offset": "0xfae0e78",
+                    "on": "111111111111813f"
+                }
+            ],
+            "name": "Precise frame cap 120 FPS (spin-wait, needs Decouple; enable only one)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "0000000000000000",
+                    "offset": "0xfae0e78",
+                    "on": "1cc7711cc7717c3f"
+                }
+            ],
+            "name": "Precise frame cap 144 FPS (spin-wait, needs Decouple; enable only one)"
+        },
+        {
+            "enabled": true,
+            "memory": [
+                {
+                    "off": "8b8390230000",
+                    "offset": "0xc53637",
+                    "on": "b80000000090"
+                }
+            ],
+            "name": "Fixed render resolution 1920x1080"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "8b8390230000",
+                    "offset": "0xc53637",
+                    "on": "b80100000090"
+                }
+            ],
+            "name": "Fixed render resolution 2432x1368"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "8b8390230000",
+                    "offset": "0xc53637",
+                    "on": "b80300000090"
+                }
+            ],
+            "name": "Fixed render resolution 3328x1872"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "8b8390230000",
+                    "offset": "0xc53637",
+                    "on": "b80400000090"
+                }
+            ],
+            "name": "Fixed render resolution 3840x2160"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1100",
+                    "on": "53415441554883ec104889fbc5fa590d6c000000c5f2580d68000000c5fa2cc183f8017d05b80100000083f8047e05b8040000006bc00a4189c4c5f22ac8c5fa5ec1c5fa1104244889dfc5fa100424e87c64fdf541ffcc75ee4883c410415d415c5bc3cccccccccccccccccccccccccccccccccccccccccccccccccccccccccc000070423333733f"
+                },
+                {
+                    "off": "c5fa1085f0feffffc5fa5e057e8989024c89efc5fa118500ffffffe866100000c5fa108500ffffff4c89efe856100000c5fa108500ffffff4c89efe846100000c5fa108500ffffff4c89efe836100000c5fa108500ffffff4c89efe826100000c5fa108500ffffff4c89efe816100000c5fa108500ffffff4c89efe806100000c5fa108500ffffff4c89efe8f60f0000c5fa108500ffffff4c89efe8e60f0000c5fa108500ffffff4c89efe8d60f0000",
+                    "offset": "0x5ab654a",
+                    "on": "c5fa1085f0feffff4c89efe8a6ab020ae99b0000009090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090"
+                },
+                {
+                    "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1200",
+                    "on": "53415441554883ec104889fbc5fa590d5c000000c5f2580d58000000c5fa2cc183f8017d05b80100000083f8047e05b804000000c5f22ac8c5fa5ec1c5fa1104246bc00a4189c44889dfc5fa100424e85c632df541ffcc75ee4883c410415d415c5bc3cccccccccccccccccccccccccc000016443333733f"
+                },
+                {
+                    "off": "e8e40b0000c5fa1085d0feffff4889dfe8d40b0000c5fa1085d0feffff4889dfe8c40b0000c5fa1085d0feffff4889dfe8b40b0000c5fa1085d0feffff4889dfe8a40b0000c5fa1085d0feffff4889dfe8940b0000c5fa1085d0feffff4889dfe8840b0000c5fa1085d0feffff4889dfe8740b0000c5fa1085d0feffff4889dfe8640b0000c5fa1085d0feffff4889dfe8540b0000",
+                    "offset": "0x4db69c7",
+                    "on": "e834a8d20ae98b00000090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090"
+                },
+                {
+                    "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1280",
+                    "on": "53415441554883ec104889fbc5fa590d5c000000c5f2580d58000000c5fa2cc183f8017d05b80100000083f8047e05b804000000c5f22ac8c5fa5ec1c5fa1104246bc00a4189c44889dfc5fa100424e8ac3b47f541ffcc75ee4883c410415d415c5bc3cccccccccccccccccccccccccc000016443333733f"
+                },
+                {
+                    "off": "e84f080000c5fa1085a0feffff4c89f7e83f080000c5fa1085a0feffff4c89f7e82f080000c5fa1085a0feffff4c89f7e81f080000c5fa1085a0feffff4c89f7e80f080000c5fa1085a0feffff4c89f7e8ff070000c5fa1085a0feffff4c89f7e8ef070000c5fa1085a0feffff4c89f7e8df070000c5fa1085a0feffff4c89f7e8cf070000c5fa1085a0feffff4c89f7e8bf070000",
+                    "offset": "0x4f5462c",
+                    "on": "e84fccb80ae98b00000090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090909090"
+                }
+            ],
+            "name": "[Physics] Rope bridges stable at 30 fps (Ape Escape jungle bridge, breakable suspension bridges, the bots' bridge): their own spring simulation keeps 1/600 s sub-steps at any frame rate, as at 60 fps"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1300",
+                    "on": "c5fa590d70000000c5f2580d6c000000c5fa2cc183f8017d05b80100000083f8047e05b80400000083f8017e3853415441554883ec104889fb4189c4c5f22ac8c5fa5ec1c5f81104244889dfc5f8100424e80f00000041ffcc75ee4883c410415d415c5bc3554889e54157e9f6be5df1cccccccccccccccc000070423333733f"
+                },
+                {
+                    "off": "554889e54157",
+                    "offset": "0x10bd260",
+                    "on": "e99b40a20e90"
+                }
+            ],
+            "name": "[Physics] Cloth and inflatables stable at 30 fps (zipper squid, air bubbles and other cloth): the game's cloth engine runs 2 steps of 1/60 s per 30 fps frame, as at 60 fps"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1400",
+                    "on": "e84b2152f0c5fa590d23000000c5f25f0d1f000000c5f25d0d1b000000c5f2594328c3cccccccccccccccccccccccccc000070420000803f00008040"
+                },
+                {
+                    "off": "c5fa104328",
+                    "offset": "0x6119f61",
+                    "on": "e89a749c09"
+                }
+            ],
+            "name": "[Physics] Jack-in-the-box pads keep Astro on the plate at 30 fps: his extra ground-check reach on the rising plate (0.1 m) scales with the frame time, as the plate moves twice as far per frame"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1800",
+                    "on": "c5f82ef70f830700d8f04d85ff0f84feffd7f0e93301d8f0"
+                },
+                {
+                    "off": "c5f82ef70f823a010000",
+                    "offset": "0x861807",
+                    "on": "e9f4ff270fcccccccccc"
+                }
+            ],
+            "name": "[Crash fix] Havok contact query no longer reads a missing shape (the Havok Worker crash at 0x880472, usually a few seconds after a stutter or level load)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1c00",
+                    "on": "488d40504839e8488d40b0770cc5fa7f004489e8e9eed606f1488d85c0fbffff488945c031c0e9dcd606f1488d40504839e8488d40b0770cc5fa7f004489e8e973de06f1488d85c0fbffff488945c031c0e961de06f1488d40504839e8488d40b0770cc5fa7f004489e8e938e506f1488d85c0fbffff488945c031c0e926e506f1"
+                },
+                {
+                    "off": "c5fa7f004489e8",
+                    "offset": "0xb4f300",
+                    "on": "e9fb28f90e6690"
+                },
+                {
+                    "off": "c5fa7f004489e8",
+                    "offset": "0xb4fab0",
+                    "on": "e97621f90e6690"
+                },
+                {
+                    "off": "c5fa7f004489e8",
+                    "offset": "0xb501a0",
+                    "on": "e9b11af90e6690"
+                }
+            ],
+            "name": "[Crash fix] Havok tree queries stop instead of overflowing their 256-entry node stack (the Physics_ATQT / Havok Worker crash at 0xb5f8c3)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1900",
+                    "on": "803d79f5ffff00750ec60570f5ffff01c6056900000001554889e54157e9a4645af5803d57000000007419c6054e00000000c60547f5ffff0048c705d4f4ffff00000000554889e54157e9b7945af5cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc00000000"
+                },
+                {
+                    "off": "554889e54157",
+                    "offset": "0x5087dc0",
+                    "on": "e93b9ba50a90"
+                },
+                {
+                    "off": "554889e54157",
+                    "offset": "0x508ae00",
+                    "on": "e91d6ba50a90"
+                }
+            ],
+            "name": "[Fix] Bot rescue plays with the game's own 60 fps timing (rescued bot and controller missing / softlock with delta time): Decouple switches off for the rescue sequence and back on after it, like pressing R1+X (needs Decouple)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1a00",
+                    "on": "c5eb5d1518000000c5fb1115f0f3ffffc3cccccccccccccccccccccccccccccc9a9999999999a93f"
+                },
+                {
+                    "off": "0000000000000000",
+                    "offset": "0xfae0c44",
+                    "on": "e8b70d0000909090"
+                }
+            ],
+            "name": "[Stability] Delta time step capped at 1/20 s (real speed down to 20 fps): below that the game slows down slightly instead of taking huge steps that make physics and models explode (needs Decouple; enable only one)"
+        },
+        {
+            "enabled": true,
+            "memory": [
+                {
+                    "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1a00",
+                    "on": "c5eb5d1518000000c5fb1115f0f3ffffc3cccccccccccccccccccccccccccccc111111111111a13f"
+                },
+                {
+                    "off": "0000000000000000",
+                    "offset": "0xfae0c44",
+                    "on": "e8b70d0000909090"
+                }
+            ],
+            "name": "[Stability] Delta time step capped at 1/30 s (real speed down to 30 fps, most stable): below that the game slows down slightly instead of taking huge steps that make physics and models explode (needs Decouple; enable only one)"
+        },
+        {
+            "enabled": true,
+            "memory": [
+                {
+                    "off": "0f97c0",
+                    "offset": "0x73af050",
+                    "on": "b00190"
+                }
+            ],
+            "name": "[Memory] 4K textures load at 2K: forces the game's own texture-pool mipmap reduction on (drops the top mip of 4096x4096 textures)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "00000000",
+                    "offset": "0xfae1b00",
+                    "on": "0000003f"
+                },
+                {
+                    "off": "741e",
+                    "offset": "0x73856db",
+                    "on": "6690"
+                },
+                {
+                    "off": "c5f25881ac5b3100",
+                    "offset": "0x73856e7",
+                    "on": "c5f2590511c47508"
+                },
+                {
+                    "off": "742e",
+                    "offset": "0x738ddc8",
+                    "on": "6690"
+                },
+                {
+                    "off": "c5f25880ac5b3100",
+                    "offset": "0x738dde2",
+                    "on": "c5f25905163d7508"
+                },
+                {
+                    "off": "741e",
+                    "offset": "0x7394e8f",
+                    "on": "6690"
+                },
+                {
+                    "off": "c5fa5881ac5b3100",
+                    "offset": "0x7394e9b",
+                    "on": "c5fa59055dcc7408"
+                }
+            ],
+            "name": "[Memory] Models: lower detail (LOD x0.5): models switch to simpler versions at half the usual distance; less geometry for the GPU and the model streamer (enable only one)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "00000000",
+                    "offset": "0xfae1b00",
+                    "on": "0000803e"
+                },
+                {
+                    "off": "741e",
+                    "offset": "0x73856db",
+                    "on": "6690"
+                },
+                {
+                    "off": "c5f25881ac5b3100",
+                    "offset": "0x73856e7",
+                    "on": "c5f2590511c47508"
+                },
+                {
+                    "off": "742e",
+                    "offset": "0x738ddc8",
+                    "on": "6690"
+                },
+                {
+                    "off": "c5f25880ac5b3100",
+                    "offset": "0x738dde2",
+                    "on": "c5f25905163d7508"
+                },
+                {
+                    "off": "741e",
+                    "offset": "0x7394e8f",
+                    "on": "6690"
+                },
+                {
+                    "off": "c5fa5881ac5b3100",
+                    "offset": "0x7394e9b",
+                    "on": "c5fa59055dcc7408"
+                }
+            ],
+            "name": "[Memory] Models: lowest detail (LOD x0.25): models switch to simpler versions at a quarter of the distance; small details may pop or vanish sooner (enable only one)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae0f00",
+                    "on": "5341544155415641574989fc4989f5e84caea0f784c00f8481000000e80fb4a0f731d2b9e803000048f7f14989c6498b5d104c89f0482b05d4000000483dfa000000770b483b1dbd0000007202eb0d4c89f04829d8488905a400000041bf030000004c89f0482b05940000004883e80c4839c37d184c89e74c89eee8e0ada0f784c07409498b5d1041ffcf75d548891d740000004c893575000000b001415f415e415d415c5bc3cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc000000000000000000000000000000000000000000000000"
+                },
+                {
+                    "off": "e87f5f4906",
+                    "offset": "0x1055ddc",
+                    "on": "e81fb1a80e"
+                }
+            ],
+            "name": "Videos play at real speed below 60 fps (skips video frames to keep up with the clock)"
+        },
+        {
+            "enabled": false,
+            "memory": [
+                {
+                    "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "offset": "0xfae1d00",
+                    "on": "4889f10fb60184c0742c488d157f0000004989c80fb60284c07412413a00750848ffc249ffc0ebec48ffc1ebd648893d4c000000eb1448393d43000000750b48c7053600000000000000e9919fa0f74885ff740c483b3d25000000750331c0c3e9ab9fa0f7cccccccccccccccccccccccccccccccccccccccccccccccccccccc0000000000000000000000000000000070735f73747564696f00"
+                },
+                {
+                    "off": "e89c7c4906",
+                    "offset": "0x105403f",
+                    "on": "e8bcdca80e"
+                },
+                {
+                    "off": "e8ce6a4906",
+                    "offset": "0x105523d",
+                    "on": "e80dcba80e"
+                }
+            ],
+            "name": "Skip the PlayStation Studios intro video (its 4K video plays at a fraction of real speed in the emulator; the game sees it as already finished)"
+        }
+    ],
+    "name": "ASTRO BOT: non RT patch + elapsed-time FPS unlock + fixed render resolution (port 1.018 -> 1.007, EXPERIMENTAL / sin probar) + R1+X deltatime toggle + 30 fps physics fixes (rope bridges, cloth and inflatables, jack-in-the-box pads) + real-speed videos",
+    "process": "eboot.bin",
+    "source_sha256": "3b5100797fe83663e18a650f82f901d066acf1029ae80cfb1be638fe0839debd",
+    "version": "01.007.000"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "kytyps5-modules",
+  "version": "1.0.0",
+  "description": "Central repository for KytyPS5 game patches, cheats, and configuration presets",
+  "type": "module",
+  "scripts": {
+    "test": "node --test scripts/test/*.test.mjs",
+    "validate": "node scripts/validate-modules.mjs",
+    "build:index": "node scripts/build-index.mjs"
+  },
+  "keywords": [
+    "kyty",
+    "kytyps5",
+    "ps5",
+    "patches",
+    "cheats",
+    "configs"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,58 @@
+name: Patch Submission
+description: Submit a new patch for a PS5 game
+title: "[PATCH]: <Game Name> (<Title ID>)"
+labels: ["submission", "patch"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Community Patch Submission
+        Submit a new patch for KytyPS5. A Pull Request will automatically be generated for maintainer review.
+  - type: input
+    id: title_id
+    attributes:
+      label: Title ID
+      description: Bare uppercase PS5 game Title ID
+      placeholder: "e.g. PPSA01325"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Game Version
+      description: Target game version (e.g. 01.905.000 or 01_905_000)
+      placeholder: "01.905.000"
+    validations:
+      required: true
+  - type: input
+    id: game_name
+    attributes:
+      label: Game Name
+      description: Human-readable name of the game
+      placeholder: "e.g. Astro's Playroom"
+    validations:
+      required: true
+  - type: input
+    id: patch_title
+    attributes:
+      label: Patch Title
+      description: Brief title of what this patch does
+      placeholder: "e.g. 60 FPS Unlock & Physics Fix"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Detailed Description
+      description: Explain what changes are made, requirements, and caveats.
+      placeholder: "Detailed patch notes..."
+    validations:
+      required: true
+  - type: textarea
+    id: attachment
+    attributes:
+      label: JSON File Attachment
+      description: Drag and drop your .json file here. The uploaded link will appear automatically.
+      placeholder: "Attach your .json file here..."
+    validations:
+      required: true
