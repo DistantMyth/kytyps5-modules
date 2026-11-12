@@ -1,14 +1,16 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   CATEGORIES,
-  FILENAME_REGEX,
+  STRICT_FILENAME_REGEX,
   validateModuleJson,
-  normalizeVersionToFilename,
 } from "./lib/schema.mjs";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, "..");
+
 async function validate() {
-  const root = process.cwd();
   let errors = 0;
   let totalChecked = 0;
 
@@ -25,10 +27,10 @@ async function validate() {
       if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
       totalChecked++;
 
-      const match = entry.name.match(FILENAME_REGEX);
+      const match = entry.name.match(STRICT_FILENAME_REGEX);
       if (!match) {
         console.error(`[INVALID FILENAME] ${cat}/json/${entry.name}`);
-        console.error(`  Expected format: <PPSA>_<XX_XXX_XXX>_<Game_Name>[_<Index>].json`);
+        console.error(`  Expected strict format: <PPSA>_<XX_XXX_XXX>_<Game_Name>_<Index>.json`);
         errors++;
         continue;
       }
@@ -38,12 +40,17 @@ async function validate() {
       try {
         const raw = await readFile(fullPath, "utf8");
         const parsed = JSON.parse(raw);
-        validateModuleJson(parsed, ppsa, verScore);
+        validateModuleJson(parsed, ppsa, verScore, { isStrict: true, category: cat });
       } catch (err) {
         console.error(`[INVALID CONTENT] ${cat}/json/${entry.name}: ${err.message}`);
         errors++;
       }
     }
+  }
+
+  if (totalChecked === 0) {
+    console.error("[ERROR] No module files found to validate. Check repository directory structure.");
+    process.exit(1);
   }
 
   if (errors > 0) {

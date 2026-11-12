@@ -84,18 +84,18 @@ jobs:
           ISSUE_NUM: ${{ github.event.issue.number }}
         run: |
           if [ -z "$PR_URL" ]; then
-            gh issue comment "$ISSUE_NUM" -b "ℹ️ **No changes detected.** The submission matches existing repository content."
+            gh issue comment "$ISSUE_NUM" --body "ℹ️ **No changes detected.** The submission matches existing repository content."
             exit 0
           fi
 
           if [ "$IS_COLLABORATOR" = "true" ] && [ -n "$PR_NUMBER" ]; then
             if gh pr merge "$PR_NUMBER" --auto --squash; then
-              gh issue comment "$ISSUE_NUM" -b "✅ **Submission accepted.** PR $PR_URL has been opened and scheduled for auto-merge."
+              gh issue comment "$ISSUE_NUM" --body "✅ **Submission accepted.** PR $PR_URL has been opened and scheduled for auto-merge."
             else
-              gh issue comment "$ISSUE_NUM" -b "🚀 **Submission accepted.** PR $PR_URL has been opened. Please review and merge."
+              gh issue comment "$ISSUE_NUM" --body "🚀 **Submission accepted.** PR $PR_URL has been opened. Please review and merge."
             fi
           else
-            gh issue comment "$ISSUE_NUM" -b "🚀 **Submission processed.** Pull Request opened: $PR_URL. A maintainer will review and merge it."
+            gh issue comment "$ISSUE_NUM" --body "🚀 **Submission processed.** Pull Request opened: $PR_URL. A maintainer will review and merge it."
           fi
 
       - name: Post failure comment to issue
@@ -105,7 +105,8 @@ jobs:
           ISSUE_NUM: ${{ github.event.issue.number }}
         run: |
           ERR_MSG="Please review the Title ID format (e.g. \`PPSA01325\`), Version format (e.g. \`01.905.000\`), and ensure the attached file is valid JSON matching your submission details."
-          if [ -f /tmp/submission-error.txt ]; then
-            ERR_MSG="$(cat /tmp/submission-error.txt)"
+          TMP_ERR="/tmp/submission-error.txt"
+          if [ -f "$TMP_ERR" ]; then
+            ERR_MSG="$(cat "$TMP_ERR")"
           fi
-          gh issue comment "$ISSUE_NUM" -b "❌ **Submission failed validation.** $ERR_MSG"
+          gh issue comment "$ISSUE_NUM" --body "❌ **Submission failed validation.** $ERR_MSG"

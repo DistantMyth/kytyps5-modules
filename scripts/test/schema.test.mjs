@@ -9,6 +9,7 @@ import {
   validateTitleId,
   getNextModuleFilename,
   validateModuleJson,
+  cleanInputString,
 } from "../lib/schema.mjs";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
 import os from "node:os";
@@ -27,40 +28,44 @@ describe("Schema & Validation Tests", () => {
     assert.ok(!STRICT_FILENAME_REGEX.test("PPSA01325_01_905_000_1.json")); // missing game name
   });
 
+  test("cleanInputString removes quotes, backticks and trims", () => {
+    assert.equal(cleanInputString("`PPSA01325`"), "PPSA01325");
+    assert.equal(cleanInputString('"01.905.000"'), "01.905.000");
+    assert.equal(cleanInputString("'Astro's Playroom'"), "Astro's Playroom");
+  });
+
   test("sanitizeGameName converts special characters and spaces cleanly", () => {
     assert.equal(sanitizeGameName("Astro's Playroom"), "Astros_Playroom");
     assert.equal(sanitizeGameName("God of War: Ragnarök"), "God_of_War_Ragnarok");
     assert.equal(sanitizeGameName("Cyberpunk 2077"), "Cyberpunk_2077");
     assert.equal(sanitizeGameName("Demon's Souls - Remake"), "Demons_Souls_Remake");
+    assert.equal(sanitizeGameName("_No response_"), "Unknown_Game");
   });
 
-  test("version normalization handles dots and underscores", () => {
+  test("version normalization handles dots, underscores, and backticks", () => {
     assert.equal(normalizeVersionToFilename("01.905.000"), "01_905_000");
-    assert.equal(normalizeVersionToFilename("01_905_000"), "01_905_000");
+    assert.equal(normalizeVersionToFilename("`01_905_000`"), "01_905_000");
     assert.equal(normalizeVersionToDisplay("01_905_000"), "01.905.000");
     assert.throws(() => normalizeVersionToFilename("1.0"), /Invalid version format/);
   });
 
-  test("validateTitleId accepts valid PPSA", () => {
+  test("validateTitleId accepts valid PPSA with quotes or backticks", () => {
     assert.equal(validateTitleId("ppsa01325"), "PPSA01325");
-    assert.equal(validateTitleId("PPSA28997"), "PPSA28997");
+    assert.equal(validateTitleId("`PPSA28997`"), "PPSA28997");
     assert.throws(() => validateTitleId("INVALID"), /Invalid Title ID/);
   });
 
   test("getNextModuleFilename increments sequentially", async () => {
     const tmpDir = await mkdtemp(path.join(os.tmpdir(), "kyty-test-"));
     try {
-      // First file should be _1
       const f1 = await getNextModuleFilename(tmpDir, "PPSA01325", "01_905_000", "Astros_Playroom");
       assert.equal(f1, "PPSA01325_01_905_000_Astros_Playroom_1.json");
       await writeFile(path.join(tmpDir, f1), "{}");
 
-      // Second file should be _2
       const f2 = await getNextModuleFilename(tmpDir, "PPSA01325", "01_905_000", "Astros_Playroom");
       assert.equal(f2, "PPSA01325_01_905_000_Astros_Playroom_2.json");
       await writeFile(path.join(tmpDir, f2), "{}");
 
-      // Third file should be _3
       const f3 = await getNextModuleFilename(tmpDir, "PPSA01325", "01_905_000", "Astros_Playroom");
       assert.equal(f3, "PPSA01325_01_905_000_Astros_Playroom_3.json");
     } finally {
@@ -68,11 +73,19 @@ describe("Schema & Validation Tests", () => {
     }
   });
 
-  test("validateModuleJson validates payload", () => {
+  test("validateModuleJson validates payload strictly", () => {
     const valid = { id: "PPSA01325", version: "01.905.000", name: "60 FPS" };
-    assert.ok(validateModuleJson(valid, "PPSA01325", "01_905_000"));
+    assert.ok(validateModuleJson(valid, "PPSA01325", "01_905_000", { isStrict: true }));
 
-    const mismatchedId = { id: "PPSA99999", version: "01.905.000" };
+    // Empty object must fail strict validation
+    assert.throws(() => validateModuleJson({}, "PPSA01325", "01_905_000", { isStrict: true }), /Missing required field 'id'/);
+
+    // Mismatched ID must fail
+    const mismatchedId = { id: "PPSA99999", version: "01.905.000", name: "Test" };
     assert.throws(() => validateModuleJson(mismatchedId, "PPSA01325", "01_905_000"), /does not match/);
+
+    // Malformed mods array must fail
+    const badMods = { id: "PPSA01325", version: "01.905.000", name: "Test", mods: "not-an-array" };
+    assert.throws(() => validateModuleJson(badMods, "PPSA01325", "01_905_000"), /must be an array/);
   });
 });

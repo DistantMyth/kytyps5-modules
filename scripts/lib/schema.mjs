@@ -19,14 +19,26 @@ export const CATEGORY_SINGULAR = {
 };
 
 /**
+ * Strips surrounding backticks, single/double quotes, and whitespace.
+ */
+export function cleanInputString(val) {
+  if (!val) return "";
+  return String(val)
+    .trim()
+    .replace(/^[`'"]+|[`'"]+$/g, "")
+    .trim();
+}
+
+/**
  * Normalizes a game title into a clean filename slug.
  * e.g. "Astro's Playroom" -> "Astros_Playroom"
  * "God of War: Ragnarök" -> "God_of_War_Ragnarok"
  */
 export function sanitizeGameName(name) {
-  if (!name || typeof name !== "string") return "Unknown_Game";
+  const cleaned = cleanInputString(name);
+  if (!cleaned || cleaned.toLowerCase() === "_no response_") return "Unknown_Game";
   return (
-    name
+    cleaned
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "") // strip diacritics
       .replace(/['’]/g, "") // remove quotes
@@ -39,7 +51,7 @@ export function sanitizeGameName(name) {
  * Normalizes version strings from '01.905.000' or '01_905_000' to '01_905_000'.
  */
 export function normalizeVersionToFilename(ver) {
-  const clean = String(ver).trim().replace(/\./g, "_");
+  const clean = cleanInputString(ver).replace(/\./g, "_");
   if (!/^\d{2}_\d{3}_\d{3}$/.test(clean)) {
     throw new Error(`Invalid version format: "${ver}". Expected format: 01.905.000 or 01_905_000.`);
   }
@@ -50,14 +62,14 @@ export function normalizeVersionToFilename(ver) {
  * Converts version from filename '01_905_000' back to display '01.905.000'.
  */
 export function normalizeVersionToDisplay(ver) {
-  return String(ver).trim().replace(/_/g, ".");
+  return cleanInputString(ver).replace(/_/g, ".");
 }
 
 /**
  * Validates a title ID (e.g. PPSA01325).
  */
 export function validateTitleId(id) {
-  const clean = String(id).trim().toUpperCase();
+  const clean = cleanInputString(id).toUpperCase();
   if (!/^[A-Z]{4}\d{5}$/.test(clean)) {
     throw new Error(`Invalid Title ID: "${id}". Expected format like PPSA01325.`);
   }
@@ -99,15 +111,21 @@ export async function getNextModuleFilename(categoryDir, ppsa, versionUnderScore
 /**
  * Validates module JSON content structure.
  */
-export function validateModuleJson(parsed, expectedId = null, expectedVersion = null) {
+export function validateModuleJson(parsed, expectedId = null, expectedVersion = null, { isStrict = true, category = null } = {}) {
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
     throw new Error("Module file must be a JSON object.");
+  }
+
+  if (isStrict) {
+    if (!parsed.id) throw new Error("Missing required field 'id' in module JSON.");
+    if (!parsed.version) throw new Error("Missing required field 'version' in module JSON.");
+    if (!parsed.name && !parsed.title) throw new Error("Missing required field 'name' or 'title' in module JSON.");
   }
 
   if (expectedId && parsed.id) {
     const jsonId = String(parsed.id).trim().toUpperCase();
     if (jsonId !== expectedId) {
-      throw new Error(`Title ID in JSON ("${jsonId}") does not match submission ("${expectedId}").`);
+      throw new Error(`Title ID in JSON ("${jsonId}") does not match expected "${expectedId}".`);
     }
   }
 
@@ -115,7 +133,25 @@ export function validateModuleJson(parsed, expectedId = null, expectedVersion = 
     const jsonVer = normalizeVersionToFilename(parsed.version);
     const expVer = normalizeVersionToFilename(expectedVersion);
     if (jsonVer !== expVer) {
-      throw new Error(`Version in JSON ("${parsed.version}") does not match submission ("${expectedVersion}").`);
+      throw new Error(`Version in JSON ("${parsed.version}") does not match expected "${expectedVersion}".`);
+    }
+  }
+
+  // If mods array is present (patches/cheats), validate structure
+  if (parsed.mods !== undefined) {
+    if (!Array.isArray(parsed.mods)) {
+      throw new Error("Field 'mods' must be an array.");
+    }
+    for (const [i, mod] of parsed.mods.entries()) {
+      if (!mod || typeof mod !== "object" || Array.isArray(mod)) {
+        throw new Error(`mods[${i}] must be an object.`);
+      }
+      if (typeof mod.name !== "string" || !mod.name.trim()) {
+        throw new Error(`mods[${i}].name must be a non-empty string.`);
+      }
+      if (mod.memory !== undefined && !Array.isArray(mod.memory)) {
+        throw new Error(`mods[${i}].memory must be an array.`);
+      }
     }
   }
 
