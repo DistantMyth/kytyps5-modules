@@ -2,7 +2,7 @@ import path from "node:path";
 import { readdir } from "node:fs/promises";
 
 // Matches: PPSA01325_01_905_000_Astros_Playroom_1.json
-// Also accommodates unindexed PPSA01325_01_905_000_Astros_Playroom.json gracefully
+// Accommodates unindexed PPSA01325_01_905_000_Astros_Playroom.json gracefully
 export const FILENAME_REGEX =
   /^([A-Z]{4}\d{5})_(\d{2}_\d{3}_\d{3})_([A-Za-z0-9]+(?:_[A-Za-z0-9]+)*?)(?:_(\d+))?\.json$/;
 
@@ -11,6 +11,12 @@ export const STRICT_FILENAME_REGEX =
   /^([A-Z]{4}\d{5})_(\d{2}_\d{3}_\d{3})_([A-Za-z0-9]+(?:_[A-Za-z0-9]+)*)_(\d+)\.json$/;
 
 export const CATEGORIES = ["patches", "cheats", "configs"];
+
+export const CATEGORY_SINGULAR = {
+  patches: "patch",
+  cheats: "cheat",
+  configs: "config",
+};
 
 /**
  * Normalizes a game title into a clean filename slug.

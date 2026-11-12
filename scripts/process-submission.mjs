@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import {
   CATEGORIES,
+  CATEGORY_SINGULAR,
   sanitizeGameName,
   normalizeVersionToFilename,
   normalizeVersionToDisplay,
@@ -23,27 +24,32 @@ function parseIssueFormBody(body) {
 }
 
 function extractAttachmentUrl(text) {
-  // Matches markdown links: [file.json](https://github.com/...) or raw URLs
-  const mdMatch = text.match(/\[([^\]]*\.json)\]\((https:\/\/[^\s)]+)\)/i);
-  if (mdMatch) return mdMatch[2];
+  // Only permit legitimate GitHub attachment endpoints (pre-signed files or repo file uploads)
+  const trustedAttachmentRegex =
+    /https:\/\/(?:github\.com\/[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+\/files\/\d+\/[^\s)]+\.json|github\.com\/user-attachments\/files\/\d+\/[^\s)]+\.json)/i;
+  const match = text.match(trustedAttachmentRegex);
+  return match ? match[0] : null;
+}
 
-  const urlMatch = text.match(/(https:\/\/(?:github\.com|user-images\.githubusercontent\.com)[^\s)]+?\.json(?:[^\s)]*)?)/i);
-  if (urlMatch) return urlMatch[1];
-
-  // Also match generic github user-attachments/files/... links
-  const attachmentMatch = text.match(/(https:\/\/[^\s)]*github\.com\/[^\s)]*files\/[^\s)]+)/i);
-  if (attachmentMatch) return attachmentMatch[1];
-
-  return null;
+async function writeFailure(msg) {
+  try {
+    await writeFile("/tmp/submission-error.txt", msg);
+  } catch {}
 }
 
 async function run() {
   const eventName = process.env.EVENT_NAME;
-  const event = JSON.parse(process.env.EVENT_PAYLOAD || "{}");
-  const ghToken = process.env.GH_TOKEN;
+  const eventPath = process.env.GITHUB_EVENT_PATH;
+
+  let event = {};
+  if (eventPath) {
+    event = JSON.parse(await readFile(eventPath, "utf8"));
+  }
 
   if (eventName !== "issues") {
-    throw new Error(`Only Issue Form submissions are supported. Received event: ${eventName}`);
+    const msg = `Only Issue Form submissions are supported. Received event: ${eventName}`;
+    await writeFailure(msg);
+    throw new Error(msg);
   }
 
   const issue = event.issue || {};
@@ -68,34 +74,72 @@ async function run() {
   const gameNameInput = sections["game name"];
   const modTitle = sections["patch title"] || sections["cheat title"] || sections["config title"] || sections["title"];
   const description = sections["detailed description"] || sections["description"] || "";
-  const attachmentUrl = extractAttachmentUrl(sections["json file attachment"] || issue.body || "");
+  const attachmentField = (sections["json file attachment"] || "").trim();
 
-  if (!rawTitleId) throw new Error("Missing Title ID (e.g. PPSA01325).");
-  if (!rawVersion) throw new Error("Missing Version (e.g. 01.905.000).");
-  if (!attachmentUrl) throw new Error("No attached JSON file found in submission.");
-
-  const ppsa = validateTitleId(rawTitleId);
-  const versionScore = normalizeVersionToFilename(rawVersion);
-  const versionDisplay = normalizeVersionToDisplay(versionScore);
-
-  console.log(`[INFO] Fetching attachment from: ${attachmentUrl}`);
-  const fetchHeaders = { "User-Agent": "kytyps5-modules-bot" };
-  if (ghToken) fetchHeaders["Authorization"] = `Bearer ${ghToken}`;
-
-  const res = await fetch(attachmentUrl, { headers: fetchHeaders });
-  if (!res.ok) {
-    throw new Error(`Failed to download attached JSON (${res.status} ${res.statusText}).`);
+  if (!rawTitleId) {
+    const msg = "Missing Title ID (e.g. `PPSA01325`).";
+    await writeFailure(msg);
+    throw new Error(msg);
+  }
+  if (!rawVersion) {
+    const msg = "Missing Version (e.g. `01.905.000` or `01_905_000`).";
+    await writeFailure(msg);
+    throw new Error(msg);
   }
 
-  const jsonText = await res.text();
+  let ppsa, versionScore, versionDisplay;
+  try {
+    ppsa = validateTitleId(rawTitleId);
+    versionScore = normalizeVersionToFilename(rawVersion);
+    versionDisplay = normalizeVersionToDisplay(versionScore);
+  } catch (err) {
+    await writeFailure(err.message);
+    throw err;
+  }
+
+  let jsonText = "";
+
+  // Support both raw JSON pasted into textarea and GitHub file attachments
+  if (attachmentField.startsWith("{") && attachmentField.endsWith("}")) {
+    jsonText = attachmentField;
+  } else {
+    const attachmentUrl = extractAttachmentUrl(attachmentField || issue.body || "");
+    if (!attachmentUrl) {
+      const msg =
+        "No valid GitHub attachment link or inline JSON found in submission. Please upload a `.json` file or paste valid JSON.";
+      await writeFailure(msg);
+      throw new Error(msg);
+    }
+
+    console.log(`[INFO] Fetching attachment from: ${attachmentUrl}`);
+    // NEVER send auth tokens to external attachment URLs (pre-signed S3 URLs)
+    const res = await fetch(attachmentUrl, {
+      headers: { "User-Agent": "kytyps5-modules-bot" },
+    });
+
+    if (!res.ok) {
+      const msg = `Failed to download attached JSON (${res.status} ${res.statusText}).`;
+      await writeFailure(msg);
+      throw new Error(msg);
+    }
+    jsonText = await res.text();
+  }
+
   let parsedJson;
   try {
     parsedJson = JSON.parse(jsonText);
   } catch (err) {
-    throw new Error(`Attached file is not valid JSON: ${err.message}`);
+    const msg = `Attached file is not valid JSON: ${err.message}`;
+    await writeFailure(msg);
+    throw new Error(msg);
   }
 
-  validateModuleJson(parsedJson, ppsa, versionScore);
+  try {
+    validateModuleJson(parsedJson, ppsa, versionScore);
+  } catch (err) {
+    await writeFailure(err.message);
+    throw err;
+  }
 
   // If game name wasn't explicitly supplied, try parsing from JSON name or fallback to PPSA
   const resolvedGameName = sanitizeGameName(
@@ -116,8 +160,9 @@ async function run() {
   await writeFile(targetFilePath, JSON.stringify(parsedJson, null, 2) + "\n");
   console.log(`[INFO] Successfully written module to ${category}/json/${filename}`);
 
+  const singular = CATEGORY_SINGULAR[category] || category;
   const isCollaborator = ["OWNER", "MEMBER", "COLLABORATOR"].includes(authorAssociation);
-  const branchSuffix = `${category.slice(0, -1)}-${ppsa}-${versionScore}-i${issueNumber}`;
+  const branchSuffix = `${singular}-${ppsa}-${versionScore}-i${issueNumber}`;
   const prTitle = `${category}: ${ppsa} (${versionDisplay}) - ${modTitle || resolvedGameName} (@${author})`;
 
   const out = process.env.GITHUB_OUTPUT;

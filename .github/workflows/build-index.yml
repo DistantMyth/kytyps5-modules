@@ -10,11 +10,6 @@ on:
       - "scripts/**"
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -22,6 +17,8 @@ concurrency:
 jobs:
   build-and-sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,12 +43,14 @@ jobs:
           if [ -n "$(git status --porcelain index.json index.min.json)" ]; then
             git add index.json index.min.json
             git commit -m "chore: synchronize index.json & index.min.json [skip ci]"
+            git pull origin main --rebase
             git push origin main
           fi
 
       - name: Prepare Pages Artifact
         run: |
           mkdir -p _site
+          touch _site/.nojekyll
           cp index.json _site/
           cp index.min.json _site/
           cp -r patches _site/ 2>/dev/null || true
@@ -69,6 +68,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build-and-sync
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

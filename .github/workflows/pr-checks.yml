@@ -24,3 +24,8 @@ jobs:
 
       - name: Validate module files
         run: node scripts/validate-modules.mjs
+
+      - name: Verify catalog index is up to date
+        run: |
+          node scripts/build-index.mjs
+          git diff --exit-code index.json index.min.json || (echo "Catalog index is out of date. Please run npm run build:index." && exit 1)
