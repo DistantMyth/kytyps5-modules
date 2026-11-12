@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-12T04:41:38.717Z",
+  "updatedAt": "2026-11-12T04:41:52.571Z",
   "patches": {
     "PPSA21564": [
       {
@@ -26,8 +26,8 @@
         "description": "",
         "author": "Community",
         "path": "patches/json/PPSA21567_01_018_000_Astro_Bot_1.json",
-        "sha256": "d0d323882e05e96f96d677a9e36cd568a35e4fb8cd85218675ecbb4a4d1ababc",
-        "size": 76756
+        "sha256": "628f07aa20d9437ec1493c0a9614eb6bb02d3c26bc2af7c9c3f8c2f1278e69f2",
+        "size": 76184
       },
       {
         "id": "PPSA21567",
@@ -38,8 +38,8 @@
         "description": "",
         "author": "Community",
         "path": "patches/json/PPSA21567_01_018_000_Astro_Bot_2.json",
-        "sha256": "ac08f34c928f01ddbb7711c2d08e7d53f79a4443b5d4f9c489dded635a6c8582",
-        "size": 95600
+        "sha256": "41475f558d10967fb214ae814166b1fac2f16ea5e29c78ad43747634e8c72106",
+        "size": 94501
       },
       {
         "id": "PPSA21567",
@@ -50,8 +50,8 @@
         "description": "",
         "author": "Community",
         "path": "patches/json/PPSA21567_01_019_000_Astro_Bot_1.json",
-        "sha256": "f959c64fee2b106467b0ee4a9b49fd8d6543f3494d11c637473848dd12db7dea",
-        "size": 76679
+        "sha256": "fc11005d7afa6af7bc0a378b350414cc431a2f0cd22c1ee5b6ac5f94babcbdc8",
+        "size": 76108
       },
       {
         "id": "PPSA21567",
@@ -62,8 +62,8 @@
         "description": "",
         "author": "Community",
         "path": "patches/json/PPSA21567_01_019_000_Astro_Bot_2.json",
-        "sha256": "449c78242b02429e98dd4b50840290df3c577b3990f40552067a12ee2605be7a",
-        "size": 95523
+        "sha256": "1cb18a029f920e4ab76ad7e34a8f89157a5d99c9f420cb5c8fe4d8771ff33d83",
+        "size": 94425
       }
     ],
     "PPSA28997": [
@@ -76,8 +76,8 @@
         "description": "",
         "author": "Community",
         "path": "patches/json/PPSA28997_01_008_001_God_of_War_Sons_of_Sparta_1.json",
-        "sha256": "685452d3488922971d3e6e57902a08248e5ab5fbd5d20c2da10c1c3b8dbe97e3",
-        "size": 658
+        "sha256": "11fdc3bc484e6fe8098d056cde8389cdaed507361f2b672b4580b973c0fb8d07",
+        "size": 639
       }
     ]
   },
