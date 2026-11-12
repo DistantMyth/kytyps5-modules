@@ -10,8 +10,8 @@ permissions:
   issues: write
 
 concurrency:
-  group: submission-${{ github.event.issue.number }}
-  cancel-in-progress: true
+  group: module-submission-pipeline
+  cancel-in-progress: false
 
 jobs:
   process:
@@ -46,7 +46,7 @@ jobs:
 
       - name: Validate module schema & run tests
         run: |
-          node --test scripts/test/*.test.mjs
+          node --test "scripts/test/**/*.test.mjs"
           node scripts/validate-modules.mjs
 
       - name: Regenerate catalog index

@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "Central repository for KytyPS5 game patches, cheats, and configuration presets",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
-    "test": "node --test scripts/test/*.test.mjs",
+    "test": "node --test \"scripts/test/**/*.test.mjs\"",
     "validate": "node scripts/validate-modules.mjs",
-    "build:index": "node scripts/build-index.mjs"
+    "build:index": "node scripts/build-index.mjs",
+    "check": "npm test && npm run validate && npm run build:index"
   },
   "keywords": [
     "kyty",

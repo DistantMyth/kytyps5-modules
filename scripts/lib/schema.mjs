@@ -22,7 +22,7 @@ export const CATEGORY_SINGULAR = {
  * Strips surrounding backticks, single/double quotes, and whitespace.
  */
 export function cleanInputString(val) {
-  if (!val) return "";
+  if (val === null || val === undefined) return "";
   return String(val)
     .trim()
     .replace(/^[`'"]+|[`'"]+$/g, "")
@@ -133,7 +133,7 @@ export function validateModuleJson(parsed, expectedId = null, expectedVersion = 
     }
   }
 
-  // If mods array is present (patches/cheats), validate structure
+  // If mods array is present in any module, validate structure
   if (parsed.mods !== undefined) {
     if (!Array.isArray(parsed.mods)) {
       throw new Error("Field 'mods' must be an array.");

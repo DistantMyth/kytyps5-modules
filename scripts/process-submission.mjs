@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
+import { fileURLToPath } from "node:url";
 import { randomUUID } from "node:crypto";
 import {
   CATEGORIES,
@@ -13,6 +14,9 @@ import {
   validateModuleJson,
   cleanInputString,
 } from "./lib/schema.mjs";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, "..");
 
 const ERROR_FILE = path.join(os.tmpdir(), "submission-error.txt");
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
@@ -47,7 +51,7 @@ function parseIssueFormBody(body) {
 }
 
 function cleanFieldValue(val) {
-  if (!val) return undefined;
+  if (val === null || val === undefined) return undefined;
   const cleaned = cleanInputString(val);
   if (!cleaned || cleaned.toLowerCase() === "_no response_") return undefined;
   return cleaned;
@@ -170,6 +174,10 @@ async function run() {
     throw new Error(`Attached file is not valid JSON: ${err.message}`);
   }
 
+  if (!parsedJson || typeof parsedJson !== "object" || Array.isArray(parsedJson)) {
+    throw new Error("Attached file must be a JSON object.");
+  }
+
   // Populate/enrich basic metadata if missing before strict validation
   if (!parsedJson.id) parsedJson.id = ppsa;
   if (!parsedJson.version) parsedJson.version = versionDisplay;
@@ -184,7 +192,7 @@ async function run() {
     gameNameInput || parsedJson.name || parsedJson.gameName || ppsa
   );
 
-  const categoryDir = path.join(process.cwd(), category, "json");
+  const categoryDir = path.join(root, category, "json");
   await mkdir(categoryDir, { recursive: true });
 
   const filename = await getNextModuleFilename(categoryDir, ppsa, versionScore, resolvedGameName);
