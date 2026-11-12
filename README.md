@@ -42,26 +42,18 @@ $$\text{Format: } \texttt{<TitleID>\_<Version>\_<Game\_Name>\_<Index>.json}$$
 
 ## 🚀 How to Contribute
 
-Anyone can contribute new patches, cheats, or configuration presets using either of two methods:
+All contributions must be submitted via **GitHub Issue Forms**:
 
-### Method 1: GitHub Issue Forms (Recommended)
 1. Go to **Issues** $\to$ **New Issue**.
 2. Select **Patch Submission**, **Cheat Submission**, or **Config Submission**.
 3. Fill in the Title ID, Game Version, Game Name, and Title.
 4. Drag and drop your `.json` file into the attachment field.
-5. Submit the issue. A GitHub Action will automatically parse the attachment, validate the schema, determine the next sequential filename, and open a Pull Request.
+5. Submit the issue.
 
-### Method 2: Issue Comment Commands
-Comment on any submission issue in the following format:
-
-```text
-/patch PPSA01325 01.905.000
-/title 60 FPS & Physics Fix
-/description Detailed description of the mod...
-
-[patch.json](https://github.com/user-attachments/files/...)
-```
-*(Use `/patch`, `/cheat`, or `/config` as appropriate. Attach your `.json` file directly in the comment).*
+The GitHub Actions submission workflow will automatically:
+- Parse and validate the form data and attached JSON.
+- Assign the next available sequential filename.
+- Open a Pull Request on branch `submission/<type>-<ppsa>-<version>-i<issue_number>`.
 
 ---
 
@@ -69,10 +61,10 @@ Comment on any submission issue in the following format:
 
 ```mermaid
 flowchart TD
-    User["Community Member"] -->|Submits Issue Form or Comments| Issue["GitHub Issue"]
+    User["Community Member"] -->|Submits Issue Form| Issue["GitHub Issue"]
     Issue -->|triggers| Wf["GitHub Action: submission.yml"]
     
-    Wf --> Parse["Parse inputs + Download attached JSON"]
+    Wf --> Parse["Parse form fields + Download attached JSON"]
     Parse --> Validate["Validate JSON syntax + Schema + Naming"]
     Validate --> Rename["Assign sequential <category>/json/<name>_<index>.json"]
     Rename --> OpenPR["Create PR & Rebuild index.min.json"]

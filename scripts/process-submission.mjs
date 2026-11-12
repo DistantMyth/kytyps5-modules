@@ -37,113 +37,38 @@ function extractAttachmentUrl(text) {
   return null;
 }
 
-function parseCommentCommand(body) {
-  const lines = body.split(/\r?\n/);
-  let command = null;
-  let titleId = null;
-  let version = null;
-  let title = null;
-  let description = "";
-  let inDesc = false;
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-    if (!command) {
-      const cmdMatch = line.match(/^\/(patch|cheat|config)\s+([A-Za-z0-9]+)\s+(\S+)/i);
-      if (cmdMatch) {
-        command = cmdMatch[1].toLowerCase();
-        titleId = cmdMatch[2].toUpperCase();
-        version = cmdMatch[3];
-        continue;
-      }
-    }
-
-    const titleMatch = line.match(/^\/title\s+(.+)$/i);
-    if (titleMatch) {
-      title = titleMatch[1].trim();
-      inDesc = false;
-      continue;
-    }
-
-    const descMatch = line.match(/^\/description\s*(.*)$/i);
-    if (descMatch) {
-      inDesc = true;
-      if (descMatch[1].trim()) {
-        description += (description ? "\n" : "") + descMatch[1].trim();
-      }
-      continue;
-    }
-
-    if (inDesc && line && !line.startsWith("/")) {
-      description += (description ? "\n" : "") + line;
-    }
-  }
-
-  return { command, titleId, version, title, description };
-}
-
 async function run() {
   const eventName = process.env.EVENT_NAME;
   const event = JSON.parse(process.env.EVENT_PAYLOAD || "{}");
   const ghToken = process.env.GH_TOKEN;
 
-  let category = null;
-  let rawTitleId = null;
-  let rawVersion = null;
-  let gameNameInput = null;
-  let modTitle = null;
-  let description = "";
-  let attachmentUrl = null;
-  let author = "community";
-  let authorAssociation = "NONE";
-  let issueNumber = 0;
-
-  if (eventName === "issue_comment") {
-    const comment = event.comment || {};
-    const issue = event.issue || {};
-    author = comment.user?.login || "community";
-    authorAssociation = comment.author_association || "NONE";
-    issueNumber = issue.number || 0;
-
-    const parsedCmd = parseCommentCommand(comment.body || "");
-    if (!parsedCmd.command) {
-      throw new Error("No valid /patch, /cheat, or /config command found in comment.");
-    }
-
-    category = parsedCmd.command === "config" ? "configs" : `${parsedCmd.command}es`;
-    if (parsedCmd.command === "cheat") category = "cheats";
-
-    rawTitleId = parsedCmd.titleId;
-    rawVersion = parsedCmd.version;
-    modTitle = parsedCmd.title;
-    description = parsedCmd.description;
-    attachmentUrl = extractAttachmentUrl(comment.body || "");
-  } else if (eventName === "issues") {
-    const issue = event.issue || {};
-    author = issue.user?.login || "community";
-    authorAssociation = issue.author_association || "NONE";
-    issueNumber = issue.number || 0;
-
-    const sections = parseIssueFormBody(issue.body || "");
-    const labels = (issue.labels || []).map((l) => (typeof l === "string" ? l : l.name));
-
-    if (labels.includes("cheat") || issue.title?.toLowerCase().includes("[cheat]")) {
-      category = "cheats";
-    } else if (labels.includes("config") || issue.title?.toLowerCase().includes("[config]")) {
-      category = "configs";
-    } else {
-      category = "patches";
-    }
-
-    rawTitleId = sections["title id"] || sections["game id"];
-    rawVersion = sections["game version"] || sections["version"];
-    gameNameInput = sections["game name"];
-    modTitle = sections["patch title"] || sections["cheat title"] || sections["config title"] || sections["title"];
-    description = sections["detailed description"] || sections["description"] || "";
-    attachmentUrl = extractAttachmentUrl(sections["json file attachment"] || issue.body || "");
-  } else {
-    throw new Error(`Unsupported event: ${eventName}`);
+  if (eventName !== "issues") {
+    throw new Error(`Only Issue Form submissions are supported. Received event: ${eventName}`);
   }
+
+  const issue = event.issue || {};
+  const author = issue.user?.login || "community";
+  const authorAssociation = issue.author_association || "NONE";
+  const issueNumber = issue.number || 0;
+
+  const sections = parseIssueFormBody(issue.body || "");
+  const labels = (issue.labels || []).map((l) => (typeof l === "string" ? l : l.name));
+
+  let category = "patches";
+  if (labels.includes("cheat") || issue.title?.toLowerCase().includes("[cheat]")) {
+    category = "cheats";
+  } else if (labels.includes("config") || issue.title?.toLowerCase().includes("[config]")) {
+    category = "configs";
+  } else {
+    category = "patches";
+  }
+
+  const rawTitleId = sections["title id"] || sections["game id"];
+  const rawVersion = sections["game version"] || sections["version"];
+  const gameNameInput = sections["game name"];
+  const modTitle = sections["patch title"] || sections["cheat title"] || sections["config title"] || sections["title"];
+  const description = sections["detailed description"] || sections["description"] || "";
+  const attachmentUrl = extractAttachmentUrl(sections["json file attachment"] || issue.body || "");
 
   if (!rawTitleId) throw new Error("Missing Title ID (e.g. PPSA01325).");
   if (!rawVersion) throw new Error("Missing Version (e.g. 01.905.000).");
