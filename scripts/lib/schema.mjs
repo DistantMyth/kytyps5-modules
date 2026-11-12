@@ -78,7 +78,7 @@ export function validateTitleId(id) {
 
 /**
  * Finds the next available incrementing filename for a PPSA and version.
- * Always increments starting from _1.json (e.g. PPSA01325_01_905_000_Astros_Playroom_1.json).
+ * Checks all existing files for the PPSA and version to ensure no duplicate indices.
  */
 export async function getNextModuleFilename(categoryDir, ppsa, versionUnderScore, gameName) {
   let existingFiles = [];
@@ -88,24 +88,20 @@ export async function getNextModuleFilename(categoryDir, ppsa, versionUnderScore
     existingFiles = [];
   }
 
-  const prefix = `${ppsa}_${versionUnderScore}_${gameName}`;
-  const pattern = new RegExp(`^${prefix}(?:_(\\d+))?\\.json$`);
+  // Look for any existing file for this PPSA and version to prevent collision
+  const ppsaVerPattern = new RegExp(`^${ppsa}_${versionUnderScore}_.*_(\\d+)\\.json$`);
   let maxIndex = 0;
 
   for (const file of existingFiles) {
-    const match = file.match(pattern);
-    if (match) {
-      if (match[1]) {
-        const idx = parseInt(match[1], 10);
-        if (idx > maxIndex) maxIndex = idx;
-      } else {
-        if (maxIndex === 0) maxIndex = 1;
-      }
+    const match = file.match(ppsaVerPattern);
+    if (match && match[1]) {
+      const idx = parseInt(match[1], 10);
+      if (idx > maxIndex) maxIndex = idx;
     }
   }
 
   const nextIndex = maxIndex + 1;
-  return `${prefix}_${nextIndex}.json`;
+  return `${ppsa}_${versionUnderScore}_${gameName}_${nextIndex}.json`;
 }
 
 /**
@@ -149,8 +145,30 @@ export function validateModuleJson(parsed, expectedId = null, expectedVersion = 
       if (typeof mod.name !== "string" || !mod.name.trim()) {
         throw new Error(`mods[${i}].name must be a non-empty string.`);
       }
-      if (mod.memory !== undefined && !Array.isArray(mod.memory)) {
-        throw new Error(`mods[${i}].memory must be an array.`);
+      if (mod.enabled !== undefined && typeof mod.enabled !== "boolean") {
+        throw new Error(`mods[${i}].enabled must be a boolean.`);
+      }
+      if (mod.memory !== undefined) {
+        if (!Array.isArray(mod.memory)) {
+          throw new Error(`mods[${i}].memory must be an array.`);
+        }
+        for (const [j, mem] of mod.memory.entries()) {
+          if (!mem || typeof mem !== "object" || Array.isArray(mem)) {
+            throw new Error(`mods[${i}].memory[${j}] must be an object.`);
+          }
+          if (typeof mem.offset !== "string" || !/^0x[0-9a-fA-F]+$/i.test(mem.offset.trim())) {
+            throw new Error(`mods[${i}].memory[${j}].offset must be a hex address string like '0x1234'.`);
+          }
+          if (typeof mem.on !== "string" || !/^[0-9a-fA-F]+$/.test(mem.on.trim()) || mem.on.trim().length % 2 !== 0) {
+            throw new Error(`mods[${i}].memory[${j}].on must be an even-length hex string.`);
+          }
+          if (typeof mem.off !== "string" || !/^[0-9a-fA-F]+$/.test(mem.off.trim()) || mem.off.trim().length % 2 !== 0) {
+            throw new Error(`mods[${i}].memory[${j}].off must be an even-length hex string.`);
+          }
+          if (mem.on.trim().length !== mem.off.trim().length) {
+            throw new Error(`mods[${i}].memory[${j}]: 'on' length (${mem.on.length}) must equal 'off' length (${mem.off.length}).`);
+          }
+        }
       }
     }
   }
