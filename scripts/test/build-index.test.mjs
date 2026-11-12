@@ -49,7 +49,7 @@ describe("Index Integrity & Build Tests", () => {
         assert.ok(Array.isArray(list));
         for (const entry of list) {
           assert.equal(entry.id, ppsa);
-          assert.match(entry.version, /^\d{2}\.\d{3}\.\d{3}$/);
+          assert.match(entry.version, /^\d{2}_\d{3}_\d{3}$/);
           assert.match(entry.sha256, /^[0-9a-f]{64}$/);
           assert.ok(entry.size > 0);
           assert.ok(entry.path.startsWith(`${cat}/json/`));

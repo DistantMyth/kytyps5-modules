@@ -8,7 +8,6 @@ import {
   CATEGORY_SINGULAR,
   sanitizeGameName,
   normalizeVersionToFilename,
-  normalizeVersionToDisplay,
   validateTitleId,
   getNextModuleFilename,
   validateModuleJson,
@@ -127,8 +126,8 @@ async function run() {
   if (!rawVersion) throw new Error("Missing Version (e.g. 01.905.000 or 01_905_000).");
 
   const ppsa = validateTitleId(rawTitleId);
-  const versionScore = normalizeVersionToFilename(rawVersion);
-  const versionDisplay = normalizeVersionToDisplay(versionScore);
+  // Automatically convert dots to underscores from the version section
+  const version = normalizeVersionToFilename(rawVersion);
 
   let jsonText = "";
 
@@ -180,12 +179,13 @@ async function run() {
 
   // Populate/enrich basic metadata if missing before strict validation
   if (!parsedJson.id) parsedJson.id = ppsa;
-  if (!parsedJson.version) parsedJson.version = versionDisplay;
+  // Automatically convert dots to underscores in JSON payload version
+  parsedJson.version = normalizeVersionToFilename(parsedJson.version || version);
   if (modTitle && !parsedJson.name && !parsedJson.title) parsedJson.name = modTitle;
   if (description && !parsedJson.description) parsedJson.description = description;
   parsedJson.author = author;
 
-  validateModuleJson(parsedJson, ppsa, versionScore, { isStrict: true, category });
+  validateModuleJson(parsedJson, ppsa, version, { isStrict: true, category });
 
   // If game name wasn't explicitly supplied, try parsing from JSON name or fallback to PPSA
   const resolvedGameName = sanitizeGameName(
@@ -195,7 +195,7 @@ async function run() {
   const categoryDir = path.join(root, category, "json");
   await mkdir(categoryDir, { recursive: true });
 
-  const filename = await getNextModuleFilename(categoryDir, ppsa, versionScore, resolvedGameName);
+  const filename = await getNextModuleFilename(categoryDir, ppsa, version, resolvedGameName);
   const targetFilePath = path.join(categoryDir, filename);
 
   await writeFile(targetFilePath, JSON.stringify(parsedJson, null, 2) + "\n");
@@ -203,7 +203,7 @@ async function run() {
 
   const singular = CATEGORY_SINGULAR[category] || category;
   const isCollaborator = ["OWNER", "MEMBER", "COLLABORATOR"].includes(authorAssociation);
-  const branchSuffix = `${singular}-${ppsa}-${versionScore}-i${issueNumber}`;
+  const branchSuffix = `${singular}-${ppsa}-${version}-i${issueNumber}`;
 
   // Sanitize PR title: single line, no backticks/quotes, max 80 chars
   const safeModTitle = (modTitle || parsedJson.name || resolvedGameName)
@@ -211,14 +211,14 @@ async function run() {
     .replace(/["`]/g, "")
     .trim()
     .slice(0, 80);
-  const prTitle = `${category}: ${ppsa} (${versionDisplay}) - ${safeModTitle} (@${author})`;
+  const prTitle = `${category}: ${ppsa} (${version}) - ${safeModTitle} (@${author})`;
 
   const out = process.env.GITHUB_OUTPUT;
   if (out) {
     const outputs = [
       formatOutput("category", category),
       formatOutput("title_id", ppsa),
-      formatOutput("version", versionDisplay),
+      formatOutput("version", version),
       formatOutput("filename", filename),
       formatOutput("author", author),
       formatOutput("is_collaborator", isCollaborator ? "true" : "false"),

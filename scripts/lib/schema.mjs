@@ -48,21 +48,34 @@ export function sanitizeGameName(name) {
 }
 
 /**
- * Normalizes version strings from '01.905.000' or '01_905_000' to '01_905_000'.
+ * Normalizes version strings, automatically converting any dots to underscores.
+ * Automatically converts '01.905.000' -> '01_905_000'.
+ * Also flexibly handles user input variations like '1.905.000', '1.018', '01.018', '1.0',
+ * and normalizes them into the standard 8-digit underscore format '01_905_000'.
  */
 export function normalizeVersionToFilename(ver) {
   const clean = cleanInputString(ver).replace(/\./g, "_");
-  if (!/^\d{2}_\d{3}_\d{3}$/.test(clean)) {
-    throw new Error(`Invalid version format: "${ver}". Expected format: 01.905.000 or 01_905_000.`);
+  if (/^\d{2}_\d{3}_\d{3}$/.test(clean)) {
+    return clean;
   }
-  return clean;
+
+  // Parse versions separated by dots or underscores
+  const parts = clean.split("_").filter(Boolean);
+  if (parts.length >= 1 && parts.length <= 3 && parts.every((p) => /^\d+$/.test(p))) {
+    const p1 = parts[0].padStart(2, "0").slice(-2);
+    const p2 = (parts[1] || "0").padStart(3, "0").slice(-3);
+    const p3 = (parts[2] || "0").padStart(3, "0").slice(-3);
+    return `${p1}_${p2}_${p3}`;
+  }
+
+  throw new Error(`Invalid version format: "${ver}". Expected format like 01.905.000 or 01_905_000.`);
 }
 
 /**
- * Converts version from filename '01_905_000' back to display '01.905.000'.
+ * Returns the normalized version with underscores (e.g. '01_905_000').
  */
 export function normalizeVersionToDisplay(ver) {
-  return cleanInputString(ver).replace(/_/g, ".");
+  return normalizeVersionToFilename(ver);
 }
 
 /**
@@ -126,6 +139,7 @@ export function validateModuleJson(parsed, expectedId = null, expectedVersion = 
   }
 
   if (expectedVersion && parsed.version) {
+    // Automatically converts dots to underscores before comparing
     const jsonVer = normalizeVersionToFilename(parsed.version);
     const expVer = normalizeVersionToFilename(expectedVersion);
     if (jsonVer !== expVer) {

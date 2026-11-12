@@ -29,7 +29,7 @@ $$\text{Format: } \texttt{<TitleID>\_<Version>\_<Game\_Name>\_<Index>.json}$$
 ```
 
 - **Title ID**: Bare uppercase PS5 game Title ID (e.g. `PPSA01325`).
-- **Version**: Game version with underscores instead of dots (e.g. `01.905.000` $\to$ `01_905_000`).
+- **Version**: Game version with underscores instead of dots (e.g. `01.905.000` $\to$ `01_905_000`). Entering dots in the version section automatically converts them to underscores.
 - **Game Name**: Alphanumeric title with words separated by single underscores (e.g. `Astros_Playroom`).
 - **Sequential Index**: Sequential counter (`_1`, `_2`, `_3`...) to handle multiple patches or cheats for the same PPSA and version without filename collisions.
 
@@ -46,12 +46,13 @@ All contributions are submitted via **GitHub Issue Forms**:
 
 1. Navigate to **Issues** $\to$ **New Issue**.
 2. Select **Patch Submission**, **Cheat Submission**, or **Config Submission**.
-3. Fill in the Title ID, Game Version, Game Name, and Title.
+3. Fill in the Title ID, Game Version (dots like `01.905.000` are automatically converted to underscores `01_905_000`), Game Name, and Title.
 4. Drag and drop your `.json` file into the attachment field (or paste the JSON directly).
 5. Submit the issue.
 
 The automated submission workflow will:
 - Parse and validate the form data and attached JSON.
+- Automatically convert any version dots to underscores.
 - Assign the next available sequential filename.
 - Open a Pull Request on branch `submission/<type>-<ppsa>-<version>-i<issue_number>`.
 
@@ -111,7 +112,7 @@ export interface CatalogIndex {
 
 export interface ModuleEntry {
   id: string;          // PS5 Title ID, e.g. "PPSA01325"
-  version: string;     // Display version, e.g. "01.905.000"
+  version: string;     // Normalized version with underscores, e.g. "01_905_000"
   gameName: string;    // Human-readable game title
   index: number;       // Sequential counter (1, 2, ...)
   title: string;       // Mod or patch title
@@ -137,7 +138,7 @@ export interface ModItem {
 export interface PatchModule {
   id: string;
   name: string;
-  version: string;
+  version: string;     // e.g. "01_905_000"
   process?: string;    // Target executable, e.g. "eboot.bin"
   source_sha256?: string;
   mods?: ModItem[];

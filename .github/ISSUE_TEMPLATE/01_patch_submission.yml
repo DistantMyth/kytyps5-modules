@@ -20,7 +20,7 @@ body:
     id: version
     attributes:
       label: Game Version
-      description: Target game version (e.g. 01.905.000 or 01_905_000)
+      description: Target game version (e.g. 01.905.000 or 01_905_000 — dots are automatically converted to underscores)
       placeholder: "01.905.000"
     validations:
       required: true
@@ -52,7 +52,7 @@ body:
     id: attachment
     attributes:
       label: JSON File Attachment
-      description: Drag and drop your .json file here. The uploaded link will appear automatically.
+      description: Drag and drop your .json file here, or paste raw JSON.
       placeholder: "Attach your .json file here..."
     validations:
       required: true

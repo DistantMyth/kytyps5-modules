@@ -1,19 +1,19 @@
 {
-    "id": "PPSA28997",
-    "mods": [
+  "id": "PPSA28997",
+  "mods": [
+    {
+      "enabled": true,
+      "memory": [
         {
-            "enabled": true,
-            "memory": [
-                {
-                    "off": "c4c17a104560c4e2791815a7d23101c5f25cc8c5f054cac5f2c20dd6cf310101c4e279181595cc3101c4e3794aca10",
-                    "offset": "0x4162822",
-                    "on": "c5fa100dfab731010f1f8400000000000f1f8400000000000f1f8400000000000f1f8400000000000f1f8000000000"
-                }
-            ],
-            "name": "Render scale 0.5: 1080p instead of 4K"
+          "off": "c4c17a104560c4e2791815a7d23101c5f25cc8c5f054cac5f2c20dd6cf310101c4e279181595cc3101c4e3794aca10",
+          "offset": "0x4162822",
+          "on": "c5fa100dfab731010f1f8400000000000f1f8400000000000f1f8400000000000f1f8400000000000f1f8000000000"
         }
-    ],
-    "name": "God of War Sons of Sparta: render resolution",
-    "process": "eboot.bin",
-    "version": "01.008.001"
+      ],
+      "name": "Render scale 0.5: 1080p instead of 4K"
+    }
+  ],
+  "name": "God of War Sons of Sparta: render resolution",
+  "process": "eboot.bin",
+  "version": "01_008_001"
 }

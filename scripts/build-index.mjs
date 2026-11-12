@@ -7,7 +7,6 @@ import {
   CATEGORY_SINGULAR,
   STRICT_FILENAME_REGEX,
   FILENAME_REGEX,
-  normalizeVersionToDisplay,
   validateModuleJson,
 } from "./lib/schema.mjs";
 
@@ -93,7 +92,7 @@ async function run() {
 
       const moduleEntry = {
         id: ppsa,
-        version: normalizeVersionToDisplay(verScore),
+        version: verScore, // normalized with underscores (e.g. 01_007_000)
         gameName: gameName.replace(/_/g, " "),
         index: seq ? parseInt(seq, 10) : 1,
         title,
