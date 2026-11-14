@@ -568,5 +568,5 @@
   ],
   "name": "ASTRO BOT for KytyPS5: non-RT renderer + delta time (community Discord patch) + general stability and physics fixes, memory and video options",
   "process": "eboot.bin",
-  "version": "01_019_000"
+  "version": "01.019.000"
 }

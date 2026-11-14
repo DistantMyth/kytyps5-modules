@@ -486,5 +486,5 @@
   "name": "ASTRO BOT: non RT patch + elapsed-time FPS unlock + fixed render resolution (port 1.018 -> 1.007, EXPERIMENTAL / sin probar) + R1+X deltatime toggle + 30 fps physics fixes (rope bridges, cloth and inflatables, jack-in-the-box pads) + real-speed videos",
   "process": "eboot.bin",
   "source_sha256": "3b5100797fe83663e18a650f82f901d066acf1029ae80cfb1be638fe0839debd",
-  "version": "01_007_000"
+  "version": "01.007.000"
 }

@@ -1095,5 +1095,5 @@
   ],
   "name": "ASTRO BOT for the KytyPS5 DLSS fork: non-RT renderer + delta time + DLSS render resolutions (community patches) + general stability and physics fixes, memory and video options",
   "process": "eboot.bin",
-  "version": "01_019_000"
+  "version": "01.019.000"
 }

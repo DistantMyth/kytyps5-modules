@@ -64,9 +64,12 @@ describe("Schema & Validation Tests", () => {
     assert.equal(normalizeVersionToFilename("1.0.0"), "01_000_000");
     assert.equal(normalizeVersionToFilename("1_018"), "01_018_000");
 
-    // Display version returns underscore format
-    assert.equal(normalizeVersionToDisplay("01.905.000"), "01_905_000");
-    assert.equal(normalizeVersionToDisplay("01_905_000"), "01_905_000");
+    // Display version returns standard dot format
+    assert.equal(normalizeVersionToDisplay("01.905.000"), "01.905.000");
+    assert.equal(normalizeVersionToDisplay("01_905_000"), "01.905.000");
+    assert.equal(normalizeVersionToDisplay("1.018"), "01.018.000");
+    assert.equal(normalizeVersionToDisplay("1_018"), "01.018.000");
+    assert.equal(normalizeVersionToDisplay("`01_905_000`"), "01.905.000");
 
     // Invalid formats throw cleanly
     assert.throws(() => normalizeVersionToFilename("not_a_version"), /Invalid version format/);

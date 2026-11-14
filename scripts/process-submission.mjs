@@ -8,6 +8,7 @@ import {
   CATEGORY_SINGULAR,
   sanitizeGameName,
   normalizeVersionToFilename,
+  normalizeVersionToDisplay,
   validateTitleId,
   getNextModuleFilename,
   validateModuleJson,
@@ -179,8 +180,8 @@ async function run() {
 
   // Populate/enrich basic metadata if missing before strict validation
   if (!parsedJson.id) parsedJson.id = ppsa;
-  // Automatically convert dots to underscores in JSON payload version
-  parsedJson.version = normalizeVersionToFilename(parsedJson.version || version);
+  // Store version in JSON payload normally with dots
+  parsedJson.version = normalizeVersionToDisplay(parsedJson.version || version);
   if (modTitle && !parsedJson.name && !parsedJson.title) parsedJson.name = modTitle;
   if (description && !parsedJson.description) parsedJson.description = description;
   parsedJson.author = author;

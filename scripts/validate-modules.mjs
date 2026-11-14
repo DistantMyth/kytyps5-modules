@@ -5,6 +5,7 @@ import {
   CATEGORIES,
   STRICT_FILENAME_REGEX,
   validateModuleJson,
+  normalizeVersionToDisplay,
 } from "./lib/schema.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -41,6 +42,11 @@ async function validate() {
         const raw = await readFile(fullPath, "utf8");
         const parsed = JSON.parse(raw);
         validateModuleJson(parsed, ppsa, verScore, { isStrict: true, category: cat });
+        if (typeof parsed.version === "string" && parsed.version.includes("_")) {
+          throw new Error(
+            `Version in JSON ("${parsed.version}") must not use underscores; use standard dot notation (e.g. "${normalizeVersionToDisplay(parsed.version)}").`
+          );
+        }
       } catch (err) {
         console.error(`[INVALID CONTENT] ${cat}/json/${entry.name}: ${err.message}`);
         errors++;

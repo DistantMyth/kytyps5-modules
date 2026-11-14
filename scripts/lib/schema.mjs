@@ -72,10 +72,11 @@ export function normalizeVersionToFilename(ver) {
 }
 
 /**
- * Returns the normalized version with underscores (e.g. '01_905_000').
+ * Returns the normalized version with standard dots (e.g. '01.905.000').
+ * Accepts dots, underscores, and variable component lengths (e.g. '1.018' -> '01.018.000').
  */
 export function normalizeVersionToDisplay(ver) {
-  return normalizeVersionToFilename(ver);
+  return normalizeVersionToFilename(ver).replace(/_/g, ".");
 }
 
 /**
